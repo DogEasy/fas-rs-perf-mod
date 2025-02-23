@@ -29,7 +29,6 @@
 mod cpu_common;
 mod file_handler;
 mod framework;
-mod misc;
 
 use std::{env, fs, process};
 
@@ -43,7 +42,6 @@ use tklog::{LEVEL, LOG};
 use log::debug;
 
 use cpu_common::Controller;
-use misc::setprop;
 
 #[global_allocator]
 static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
@@ -62,7 +60,6 @@ fn main() -> Result<()> {
 
         return Ok(());
     } else if args[1] == "run" {
-        setprop("fas-rs-server-started", "true");
         run(&args[2]).unwrap_or_else(|e| {
             for cause in e.chain() {
                 error!("{:#?}", cause);
