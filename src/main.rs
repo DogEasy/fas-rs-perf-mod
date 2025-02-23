@@ -48,7 +48,7 @@ use misc::setprop;
 #[global_allocator]
 static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
 
-const USER_CONFIG: &str = "/sdcard/Android/fas-rs/games.toml";
+const USER_CONFIG: &str = "/data/adb/fas-rs/games.toml";
 
 fn main() -> Result<()> {
     let args: Vec<_> = env::args().collect();
