@@ -21,6 +21,8 @@ use dumpsys_rs::Dumpsys;
 
 use inotify::{Inotify, WatchMask};
 
+use stringzilla::sz;
+
 const REFRESH_TIME: Duration = Duration::from_secs(1);
 
 #[derive(Default)]
@@ -32,10 +34,9 @@ struct WindowsInfo {
 impl WindowsInfo {
     pub fn new(dump: &str) -> Self {
         let pids = Self::parse_top_app(dump);
-        let visible_freeform_window = dump.contains("freeform")
-            || dump.contains("FlexibleTaskCaptionView")
-            || dump.contains("FlexibleTaskIndicatorView");
-
+        let visible_freeform_window = sz::find(dump, "freeform").is_some()
+            || sz::find(dump, "FlexibleTaskCaptionView").is_some()
+            || sz::find(dump, "FlexibleTaskIndicatorView").is_some();
         Self {
             visible_freeform_window,
             pids,
@@ -44,7 +45,7 @@ impl WindowsInfo {
 
     fn parse_top_app(dump: &str) -> Vec<i32> {
         dump.lines()
-            .filter(|l| l.contains("Session{"))
+            .filter(|l| sz::find(l, "Session{").is_some())
             .filter_map(|l| l.split_whitespace().nth(3))
             .filter_map(|s| s.split(':').next())
             .map(|p| p.trim().parse().unwrap())
