@@ -10,7 +10,7 @@ use std::{
     time::{Duration, Instant},
 };
 
-const NODE_PATH: &str = "/dev/fas_rs";
+const NODE_PATH: &str = "/data/adb/fas-rs";
 const REFRESH_TIME: Duration = Duration::from_secs(1);
 
 pub struct Node {
